@@ -17,9 +17,9 @@ Because all `Range` types in `core::ops` implement Iterator, they can't implemen
 Right now it's a small stumbling block to learning that ranges can't be reused, e.g.:
 
 ```rust
-let x = 0..10
+let x = 0..10;
 for i in x {} // fine
-for i in x {} // error because it moved
+for i in x {} // error x was moved and Range doesn't implement Copy
 ```
 
 Additionally, types like `Result` and `Option` that pass them around are no longer `Copy`-able, so embedding becomes harder.
