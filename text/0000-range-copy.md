@@ -6,8 +6,8 @@
 # Summary
 [summary]: #summary
 
-RFC proposes adding new Range types that are `Copy`able , while changing the range syntax to use those types for future Rust editions. 
-Implementing `IntoIterator` rather than `Iterator`, will avoid some drawbacks of the existing Range type - namely easy of use and easier embedding in types.
+RFC proposes adding new Range types that are `Copy`-able while changing the range syntax to use those types for future Rust editions. 
+Implementing `IntoIterator` rather than `Iterator`, will avoid some drawbacks of the existing Range type - namely ease of use and easier embedding in types.
 
 # Motivation
 [motivation]: #motivation
@@ -71,15 +71,20 @@ This RFC deals with minor nit in language. It doesn't have a major impact or int
 # Drawbacks
 [drawbacks]: #drawbacks
 
-There could be some confusion between using `Range` and `RangeIter`; hopefully, `deprecated` notice will remove some of the type confusion. That said this new type may prove source of minor frustration for existing users.
+There could be some confusion between using `Range` and `RangeIter`; hopefully, `deprecated` notice will remove some of the type confusion. That said this new type may prove a source of minor frustration for existing users.
 
-Having double the pointer length isn't super cache-friendly, so it might have some performance problems.
+Having double the pointer length isn't super cache-friendly, so it might have some performance problems. 
 
 # Rationale and alternatives
 [rationale-and-alternatives]: #rationale-and-alternatives
 
-- Possible designs include some kind of independent crate, but without adding it to Rust `core`/`std` the range literal old behavior will remain the same.
-- It fixes a minor nit in Rust Language but isn't critical, so leaving it unchanged is an alternative.
+Alternatives:
+1. Keep this in an independent crate, but without adding it to Rust, `core`/`std` the range literal old behavior will remain the same.
+2. Introduce a `Span` that acts as a copyable `Range`; Do not rename the current `Range`.
+    a. Possibly change literals to emit `Span` when used in `for` loops.
+    b. Do not touch anything
+4. Make `Range` derive `Copy` with a lint for footgunny uses.
+5. Do nothing. It fixes a minor nit in Rust Language but isn't critical, so leaving it unchanged is an alternative.
 
 
 # Prior art
@@ -101,3 +106,5 @@ N/A
 # Future possibilities
 
 The issue is pretty self-contained, and shouldn't affect anything other than changes.
+
+However, it might affect other `Range` related RFCs due to changes in syntax/types.
